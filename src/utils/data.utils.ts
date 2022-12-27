@@ -17,6 +17,11 @@ export async function getCityForecast(city: string): Promise<Forecast> {
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`
 
   const response: FetchResponse = await fetch(url)
+  if (response.status === 401) {
+    throw new Error(
+      'You need to add your open weather api key in the .env file'
+    )
+  }
   const apiForecast = (await response.json()) as ApiForecast
 
   const forecast = parseApiForecast(apiForecast)
